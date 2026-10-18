@@ -1,0 +1,12 @@
+{
+  "appId": "jp.rakugakiundoukai.app",
+  "appName": "らくがき運動会",
+  "webDir": "www",
+  "backgroundColor": "#7fd3fb",
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "never"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "rakugakiundoukai",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "www": "python scripts/copy_www.py",
+    "sync": "python scripts/copy_www.py && npx cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.0.0",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.0.0",
+    "@capacitor/share": "^8.0.0",
+    "@revenuecat/purchases-capacitor": "^13.7.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/ios": "^8.5.3"
+  }
+}
