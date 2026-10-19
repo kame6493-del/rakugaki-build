@@ -1,4 +1,4 @@
-# ハルの冒険の iOS 版を GitHub のクラウド Mac で組み立て、App Store Connect(TestFlight)へ送る。
+# らくがき運動会の iOS 版を GitHub のクラウド Mac で組み立て、App Store Connect(TestFlight)へ送る。
 # このファイルの正本は手元の app/scripts/ios-testflight.yml(ios_build_repo.py が写す)。
 # シークレット4つ: ASC_KEY_ID / ASC_ISSUER_ID / APPLE_TEAM_ID / ASC_KEY_P8_BASE64
 name: iOS TestFlight
