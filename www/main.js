@@ -109,12 +109,12 @@ const Store = {
 const Full = {
   PID: 'jp.rakugakiundoukai.app.full', ENT: 'full',
   RC_KEYS: { android: 'goog_AkAbslCFlJUVfYzPYBVuZHIIJch', ios: 'appl_iugBYTchEgxZYmoYPaooSPtiOlZ' }, // RevenueCat の公開キー(秘密の鍵ではない)。scripts/rc_setup.py の結果
-  PLAY_URL: 'https://play.google.com/apps/testing/jp.rakugakiundoukai.app',
+  PLAY_URL: '',
   KEY: CFG.STORE_KEY + '_full', FX_KEY: CFG.STORE_KEY + '_fx',
   owned: false, pkg: null, price: '', busy: false, ready: null, prev: null,
   platform() { const C = window.Capacitor; try { if (C && C.isNativePlatform && C.isNativePlatform() && C.getPlatform) return C.getPlatform(); } catch (e) { } return 'web'; },
   native() { const p = Full.platform(); return p === 'android' || p === 'ios'; },
-  has() { return (Full.native() && Full.owned) || (TEST && params.get('full') === '1'); },
+  has() { return Full.native() && Full.owned; },
   plugin() { if (!Full.native()) return null; const C = window.Capacitor; return (C && C.Plugins && C.Plugins.Purchases) || null; },
   isFull(info) { return !!(info && info.entitlements && info.entitlements.active && info.entitlements.active[Full.ENT]); },
   cancelled(e) { return !!(e && (e.userCancelled || (e.data && e.data.userCancelled) || String(e.code) === '1')); },
@@ -197,7 +197,7 @@ const Full = {
   render() {
     if (!$('fullScreen')) return;
     const nat = Full.native();
-    $('fullWebBox').classList.toggle('hidden', nat);
+    if ($('fullWebBox')) $('fullWebBox').classList.toggle('hidden', nat); // アプリ版の www には この欄が無い(copy_www.py で外す)
     $('fullBuyBox').classList.toggle('hidden', !nat);
     $('fullOwned').classList.toggle('hidden', !Full.has());
     $('fullBuyBtn').classList.toggle('hidden', Full.has());
@@ -1830,7 +1830,7 @@ $('fullBtn').onclick = () => Full.open('title');
 $('fullBuyBtn').onclick = () => Full.buy();
 $('fullRestoreBtn').onclick = () => Full.restore();
 $('fullBackBtn').onclick = () => Full.back();
-$('fullPlayLink').href = Full.PLAY_URL;
+if ($('fullPlayLink')) $('fullPlayLink').href = Full.PLAY_URL;
 
 // ---------- ループ ----------
 function frame(dt) {
@@ -2035,18 +2035,8 @@ const Rec = {
   list() { const d = Rec.load(); return Object.values(d.pets).filter(p => p && p.cr && Array.isArray(p.cr.strokes)).sort((a, b) => b.last - a.last); },
 };
 
-// ---------- 広告(忍者AdMax のタグを ad.html の枠の中で出す) ----------
-// 枠に入れる理由: スマホで画面の下に貼りつく広告(オーバーレイ)がレース中・描いている最中に出て、押し間違えで飛ばないように。
-// タグそのものは書き換えない。見えている画面(タイトル・結果)の枠だけ読み込む。
-const Ads = {
-  load(screen) {
-    if (params.has('noads')) return;
-    for (const f of screen.querySelectorAll('iframe.adFrame')) {
-      const last = +(f.dataset.at || 0);
-      if (!f.src || (Date.now() - last > 90000 && screen.id === 'resultScreen')) { f.src = f.dataset.src + '?r=' + Date.now(); f.dataset.at = Date.now(); }
-    }
-  },
-};
+// アプリ版は 広告なし
+const Ads = { load() { } };
 
 // ---------- いまの画面を覚えておく(広告などで別のページへ行って戻っても元どおり) ----------
 const Persist = {

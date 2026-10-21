@@ -12,7 +12,6 @@ html,body{height:100%;background:var(--sky);color:var(--ink);font-family:var(--f
 .col{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:stretch;gap:10px;margin:auto 0}
 #titleScreen{background:linear-gradient(rgba(185,233,255,.35),rgba(185,233,255,0) 40%)}
 #titleScreen .menu,#titleScreen .invite{background:rgba(255,255,255,.82);border:3px solid var(--ink);border-radius:20px;padding:12px;box-shadow:0 4px 0 rgba(25,38,61,.6)}
-#titleScreen .admax{background:rgba(255,255,255,.82);border-radius:12px;padding:4px 0}
 .titleTop{text-align:center;margin-top:6px}
 .logo{font-size:44px;line-height:1.05;letter-spacing:.02em;font-weight:900;transform:rotate(-2deg)}
 .logo span{display:inline-block;-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 4px 0 rgba(25,38,61,.9)}
@@ -39,8 +38,6 @@ html,body{height:100%;background:var(--sky);color:var(--ink);font-family:var(--f
 .h2{font-size:19px;font-weight:900;text-align:center}
 .joinRow{display:flex;gap:8px}
 .joinRow input{flex:1;min-width:0;font:inherit;font-size:20px;font-weight:bold;letter-spacing:.2em;text-transform:uppercase;padding:8px 12px;border-radius:12px;border:2px solid var(--ink);-webkit-user-select:text;user-select:text}
-.admax{margin:18px auto 4px;min-height:262px;width:300px;max-width:100%;text-align:center}
-.adLabel{font-size:11px;color:rgba(25,38,61,.7);margin-bottom:2px}
 
 /* 描く */
 #drawScreen{background:rgba(185,233,255,.92)}
@@ -136,7 +133,7 @@ html,body{height:100%;background:var(--sky);color:var(--ink);font-family:var(--f
   .courses{grid-template-columns:1fr 1fr}
   .resultWrap{max-width:1000px;display:grid;grid-template-columns:auto 320px;grid-template-areas:"img btn" "img ad";gap:12px 20px;align-items:start}
   #resultImg{grid-area:img;max-height:calc(100dvh - 40px);max-width:58vw}
-  .resultBtns{grid-area:btn;width:320px} .resultWrap .admax{grid-area:ad;margin-top:4px}
+  .resultBtns{grid-area:btn;width:320px}
   #titleScreen .col{max-width:430px;margin-left:4vw;margin-right:auto}
 }
 
@@ -161,12 +158,6 @@ html,body{height:100%;background:var(--sky);color:var(--ink);font-family:var(--f
 .prog{height:24px;border-width:3px}
 .prog .goal{right:-2px;top:-3px;width:26px;height:24px;border-radius:0 999px 999px 0;background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/8px 8px;color:transparent;overflow:hidden}
 .ticker{width:min(94%,640px);font-size:22px;border-width:4px;border-radius:18px;padding:10px 16px;background:#fff;box-shadow:0 5px 0 var(--ink)}
-
-/* 10/16: 広告の枠(ボタンとの間をあける) */
-.admax{margin:34px auto 8px;min-height:268px}
-.adFrame{display:block;width:300px;height:250px;border:0;margin:0 auto;background:#fff}
-#titleScreen .admax{border-top:2px dashed rgba(25,38,61,.35);padding-top:10px;border-radius:0}
-.resultWrap .admax{border-top:2px dashed rgba(25,38,61,.35);padding-top:10px}
 /* タイトルの小さいボタン */
 .menuRow{display:flex;gap:8px}
 #titleScreen .menu .menuRow .sub{flex:1;font-size:16px;padding:9px;background:#fff;color:var(--ink);text-shadow:none;border-width:3px}
@@ -236,7 +227,6 @@ button.gi{font:inherit;color:var(--ink);cursor:pointer}
 .rk .rkBlock{flex:0 0 auto;font-size:10px;padding:2px 6px;background:#fff}
 .rk.top1{background:#fff4c4} .rk.top1 .no{color:#c9900a} .rk.me{border-width:4px;border-color:var(--red)}
 @media (min-aspect-ratio: 11/10){
-  .resultWrap .admax{grid-area:ad}
   .hudSub{top:58px}
 }
 .hudSub{flex-direction:column;align-items:stretch;gap:6px}
