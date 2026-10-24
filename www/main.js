@@ -103,9 +103,7 @@ const Store = {
   },
 };
 
-// ---------- 完全版(買い切り。Android・iOS のアプリ版だけ RevenueCat の Purchases プラグインで買える) ----------
 // できること: 縦動画の保存・ペンと色のパック・自分の図鑑(300匹)・キラキラ。どれも見た目だけで、走る速さ・強さは変わらない。
-// ブラウザ版は買えない(今のまま遊べて、完全版の所には「アプリ版で使えます」とストアの案内を出す)。
 const Full = {
   PID: 'jp.rakugakiundoukai.app.full', ENT: 'full',
   RC_KEYS: { android: 'goog_AkAbslCFlJUVfYzPYBVuZHIIJch', ios: 'appl_iugBYTchEgxZYmoYPaooSPtiOlZ' }, // RevenueCat の公開キー(秘密の鍵ではない)。scripts/rc_setup.py の結果
@@ -127,7 +125,6 @@ const Full = {
     if (!Full.ready) Full.ready = Promise.resolve(Pur.configure({ apiKey: key })).then(() => Pur, e => { Full.ready = null; throw e; });
     return Full.ready;
   },
-  // 値段(ストアの表示のまま)と、もう買ってあるか。入れ直した時は Android は購入の記録を自動で読み直す(iOS は「購入を復元」)
   async load() {
     const Pur = await Full.init(); if (!Pur) return;
     try {
@@ -153,7 +150,7 @@ const Full = {
   msg(t) { const el = $('fullStatus'); if (el) el.textContent = t || ''; },
   async buy() {
     const Pur = Full.plugin();
-    if (!Pur) { Full.msg(Full.native() ? 'ストアにつなげませんでした' : '完全版はアプリ版(Android)で使えます'); return; }
+    if (!Pur) { Full.msg(Full.native() ? 'ストアにつなげませんでした' : '完全版はアプリ版で使えます'); return; }
     if (Full.busy) return;
     if (Full.offline()) { Full.msg('ネットにつながっていません。つながる所でもう一度どうぞ'); return; }
     Full.busy = true; Full.msg('ストアにつないでいます…'); Full.render();
@@ -216,7 +213,6 @@ const Full = {
 try { Full.owned = Full.native() && localStorage.getItem(Full.KEY) === '1'; } catch (e) { }
 if (Full.native()) setTimeout(() => { Full.load().catch(e => { try { console.warn('[rakugaki] store', e && e.message); } catch (e2) { } }); }, 1200);
 function blobToB64(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => { const s = String(r.result); res(s.slice(s.indexOf(',') + 1)); }; r.onerror = () => rej(r.error); r.readAsDataURL(blob); }); }
-// 動画を端末に保存(Android は Documents/RakugakiUndoukai へ。できない時・iOS は共有の画面から「保存」)
 async function saveToDevice(blob, name, type) {
   const C = window.Capacitor, P = (C && C.Plugins) || {};
   if (Full.platform() === 'android' && P.Filesystem) {
@@ -2271,7 +2267,7 @@ async function openRank() {
   } catch (e) {
     console.error(e);
     const perm = /permission/i.test(String(e && (e.code || e.message)));
-    $('rankStatus').textContent = e && e.busy ? BUSY_MSG + '。ひとりで走る・描く・共有はそのまま遊べます' : perm ? 'ランキングはただいま準備中です。ほかの遊びはそのまま遊べます' : 'いまはランキングを読みこめません(ネットにつながっていないかも)。ほかの遊びはそのまま遊べます';
+    $('rankStatus').textContent = e && e.busy ? BUSY_MSG + '。ひとりで走る・描く・共有はそのまま遊べます' : perm ? 'いまはランキングを読みこめません。ほかの遊びはそのまま遊べます' : 'いまはランキングを読みこめません(ネットにつながっていないかも)。ほかの遊びはそのまま遊べます';
   }
 }
 $('rankBtn').onclick = () => openRank();

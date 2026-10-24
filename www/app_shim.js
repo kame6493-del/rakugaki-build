@@ -1,4 +1,4 @@
-// Android アプリの中だけで読む(scripts/copy_www.py が www/index.html の main.js の前に差し込む)。Web 版には入れない。
+// アプリ版の中だけで読む(scripts/copy_www.py が www/index.html の main.js の前に差し込む)。Web 版には入れない。
 // - 共有: WebView には navigator.share が無いので、@capacitor/share と @capacitor/filesystem で同じ形の物を用意する
 // - 外のページ(X の投稿画面・フォロー): Capacitor が外のブラウザ/アプリで開く(location へ入れる)
 // - 戻るボタン: 画面ごとの「もどる」を押す。タイトルなら閉じる
