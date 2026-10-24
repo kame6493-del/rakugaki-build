@@ -2,7 +2,7 @@
 // 使うのは 匿名ログイン と Firestore だけ(無料の Spark プランの範囲)。ルールは firebase/firestore.rules。
 // 生き物は sim.js の Creature の形(線の点・名前)を、URL と同じ詰め方の文字列(data)にして保存する。
 const V = '12.4.0';
-const FB = `https://www.gstatic.com/firebasejs/${V}/`;
+const FB = `./vendor/firebasejs/${V}/`;
 // ウェブの設定(公開してよい識別子。秘密の鍵ではない)
 const firebaseConfig = {
   apiKey: 'AIzaSyC4yXnCeOvQZarFHz-0KKk5_szykky3yJk',
