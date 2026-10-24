@@ -890,7 +890,7 @@ function startDraw(mode, opts) {
   const rs = $('rivalStrip'); rs.innerHTML = '';
   if (opts.rivals && opts.rivals.length) {
     rs.classList.remove('hidden');
-    for (const cr of opts.rivals) { const d = document.createElement('div'); d.className = 'rv'; const c = document.createElement('canvas'); c.width = 80; c.height = 80; drawThumb(c, cr); d.appendChild(c); d.appendChild(document.createTextNode(cr.name || L('名なし'))); rs.appendChild(d); }
+    for (const cr of opts.rivals) { const d = document.createElement('div'); d.className = 'rv'; const c = document.createElement('canvas'); c.width = 80; c.height = 80; drawThumb(c, cr); d.appendChild(c); d.appendChild(document.createTextNode(dispName(cr.name))); rs.appendChild(d); }
   } else rs.classList.add('hidden');
   $('drawTimer').classList.toggle('hidden', !opts.timer);
   show('drawScreen');
@@ -922,7 +922,7 @@ function openPrep() {
   const pet = Rec.pet(G.me);
   if (!Full.has()) delete G.me.fx;
   buildFxRow();
-  $('prepName').textContent = G.me.name || L('名なし');
+  $('prepName').textContent = dispName(G.me.name);
   $('prepRec').innerHTML = pet && pet.n ? L('これまで <b>{n}</b> 戦 <b>{w}</b> 勝', { n: pet.n, w: pet.wins }) : L('はじめてのレース');
   const box = $('courses'); box.innerHTML = '';
   for (const id of RU.COURSE_IDS) {
@@ -1043,7 +1043,7 @@ function buildScene(ents, course, seed, mode, cheers) {
   const lanes = laneLayout(ents.length);
   const sc = {
     mode, course, seed, lanes, cheers: (cheers || []).slice(), infos,
-    ents: ents.map((e, i) => ({ cr: e.cr, info: infos[i], doodle: new Doodle(e.cr, infos[i], CFG.SIZE), name: e.cr.name || L('名なし'), isMe: !!e.isMe, cpu: !!e.cpu })),
+    ents: ents.map((e, i) => ({ cr: e.cr, info: infos[i], doodle: new Doodle(e.cr, infos[i], CFG.SIZE), name: dispName(e.cr.name), isMe: !!e.isMe, cpu: !!e.cpu })),
     meIndex: ents.findIndex(e => e.isMe),
     evIdx: 0, ticker: [], tickT: -9, said: {}, lastLine: '',
     pops: [], fx: [], shake: 0, prevRank: 0, rankHold: 0, cheerTaps: 0, lastCheerT: -9,
@@ -1638,7 +1638,7 @@ function renderEntrants(box, creatures, size) {
   box.innerHTML = '';
   for (let i = 0; i < size; i++) {
     const d = document.createElement('div');
-    if (creatures[i]) { d.className = 'ent'; const c = document.createElement('canvas'); c.width = 192; c.height = 160; drawThumb(c, creatures[i]); d.appendChild(c); d.appendChild(document.createTextNode(creatures[i].name || L('名なし'))); }
+    if (creatures[i]) { d.className = 'ent'; const c = document.createElement('canvas'); c.width = 192; c.height = 160; drawThumb(c, creatures[i]); d.appendChild(c); d.appendChild(document.createTextNode(dispName(creatures[i].name))); }
     else { d.className = 'ent empty'; d.textContent = L('{i}人目 まち', { i: i + 1 }); }
     box.appendChild(d);
   }
@@ -1678,7 +1678,7 @@ function readHash() {
 function showInvite(ch) {
   const box = $('inviteBox');
   const full = ch.creatures.length >= ch.size;
-  box.innerHTML = '<p class="h2"></p>'; box.firstChild.textContent = full ? L('3人対戦の結果が届きました') : L('{name} から挑戦状!', { name: ch.creatures[0].name });
+  box.innerHTML = '<p class="h2"></p>'; box.firstChild.textContent = full ? L('3人対戦の結果が届きました') : L('{name} から挑戦状!', { name: dispName(ch.creatures[0].name) });
   const ents = document.createElement('div'); ents.className = 'entrants'; renderEntrants(ents, ch.creatures, ch.size); box.appendChild(ents);
   const note = document.createElement('p'); note.className = 'note'; note.textContent = full ? L('コース: {c}。だれが開いても同じ結果になります', { c: COURSES[ch.course].name }) : L('コース: {c}。あと {n} 人。あなたも描いて参加しよう', { c: COURSES[ch.course].name, n: ch.size - ch.creatures.length });
   box.appendChild(note);
@@ -1801,7 +1801,7 @@ async function galleryMore() {
     Gal.items.push(it);
     const d = document.createElement('div'); d.className = 'gi';
     const c = document.createElement('canvas'); c.width = 240; c.height = 200; drawThumb(c, it.creature); d.appendChild(c);
-    const n = document.createElement('div'); n.textContent = it.creature.name || L('名なし'); d.appendChild(n);
+    const n = document.createElement('div'); n.textContent = dispName(it.creature.name); d.appendChild(n);
     const tt = document.createElement('div'); tt.className = 'gt'; tt.textContent = it.created ? L('{d} に出た子', { d: it.created }) : ''; d.appendChild(tt);
     const row = document.createElement('div'); row.className = 'row';
     const b = document.createElement('button'); b.textContent = L('走る'); b.onclick = () => vsGallery(it.creature);
@@ -1813,7 +1813,7 @@ async function galleryMore() {
     $('galGrid').appendChild(d);
   }
 }
-function vsGallery(cr) { G.opponent = cr; startDraw('gallery', { title: L('「{name}」と走る生き物を描いてね', { name: cr.name }), rivals: [cr] }); }
+function vsGallery(cr) { G.opponent = cr; startDraw('gallery', { title: L('「{name}」と走る生き物を描いてね', { name: dispName(cr.name) }), rivals: [cr] }); }
 $('galleryBtn').onclick = () => openGallery();
 $('galMoreBtn').onclick = () => galleryMore().catch(e => toast(e && e.busy ? BUSY_MSG : e.message, 3500));
 $('galRandomBtn').onclick = async () => { try { const m = await Store.mod(); const it = await m.randomCreature(); if (!it) { toast(L('まだだれもいません')); return; } vsGallery(it.creature); } catch (e) { toast(e && e.busy ? BUSY_MSG : (e.message || L('読みこめません')), 3500); } };
@@ -2087,7 +2087,7 @@ const Persist = {
       if (st.me && st.me.strokes) { G.me = st.me; G.meInfo = analyze(st.me.strokes); }
       const sm = st.mode === 'gallery' && st.opp ? 'gallery' : 'solo';
       switch (st.screen) {
-        case 'drawScreen': startDraw(sm, st.opp ? { title: L('「{name}」と走る生き物を描いてね', { name: st.opp.name }), rivals: [st.opp] } : {}); strokes = Array.isArray(st.strokes) ? st.strokes : []; renderPad(); $('nameInput').value = st.name || ''; break;
+        case 'drawScreen': startDraw(sm, st.opp ? { title: L('「{name}」と走る生き物を描いてね', { name: dispName(st.opp.name) }), rivals: [st.opp] } : {}); strokes = Array.isArray(st.strokes) ? st.strokes : []; renderPad(); $('nameInput').value = st.name || ''; break;
         case 'prepScreen': if (!G.me) return false; G.mode = sm; openPrep(); break;
         case 'race': case 'resultScreen': {
           const r = st.race; if (!r || !r.ents) return false;
@@ -2118,6 +2118,9 @@ window.addEventListener('pageshow', e => { if (e.persisted) { lastTs = 0; if (SN
 setInterval(() => { if (curScreen === 'drawScreen') Persist.save(); }, 3000);
 
 // ---------- アルバム・1匹のきろく ----------
+// 名前の表示: 名前なしで描いた子の決まりの名前(どの言葉で描いたかによらず)は、今の言葉の決まりの名前で見せる。人が入れた名前はそのまま
+const DEFAULT_NAMES = ['名なしのらくがき', 'Nameless', '이름 없는 낙서'];
+function dispName(n) { return !n ? L('名なし') : DEFAULT_NAMES.includes(n) ? L('名なしのらくがき') : n; }
 function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
 function fmtCourse(id) { return COURSES[id] ? COURSES[id].name : id; }
 function openAlbum() {
@@ -2145,7 +2148,7 @@ function openAlbum() {
   for (const p of pets) {
     const it = document.createElement('button'); it.type = 'button'; it.className = 'gi pet';
     const c = document.createElement('canvas'); c.width = 240; c.height = 200; drawThumb(c, p.cr); it.appendChild(c);
-    const n = document.createElement('div'); n.textContent = (full && p.no ? `No.${p.no} ` : '') + (p.cr.name || L('名なし')) + (full && p.fav ? ' ★' : ''); it.appendChild(n);
+    const n = document.createElement('div'); n.textContent = (full && p.no ? `No.${p.no} ` : '') + (dispName(p.cr.name)) + (full && p.fav ? ' ★' : ''); it.appendChild(n);
     const tt = document.createElement('div'); tt.className = 'gt'; tt.textContent = L('{w}勝 / {n}戦', { w: p.wins, n: p.n }) + (p.n ? L('・平均{a}位', { a: (p.sumRank / p.n).toFixed(1) }) : ''); it.appendChild(tt);
     it.onclick = () => openPet(p.id);
     g.appendChild(it);
@@ -2156,7 +2159,7 @@ function openPet(id) {
   const d = Rec.load(), p = d.pets[id]; if (!p) return false;
   G.petId = id;
   drawThumb($('petCanvas'), p.cr, { bg: '#ffffff' });
-  $('petName').textContent = p.cr.name || L('名なし');
+  $('petName').textContent = dispName(p.cr.name);
   $('petBorn').textContent = (Full.has() && p.no ? L('図鑑 No.{n}・', { n: p.no }) : '') + L('{d} に描いた子', { d: p.born });
   $('petFavBtn').textContent = L(!Full.has() ? 'お気に入り' : p.fav ? '★ お気に入り' : '☆ お気に入りにする');
   $('petFavBtn').classList.toggle('lock', !Full.has());
@@ -2277,7 +2280,7 @@ async function openRank() {
       const li = document.createElement('li'); li.className = 'rk' + (r.uid === m.uid() ? ' me' : '') + (shown <= 3 ? ' top' + shown : '');
       const c = document.createElement('canvas'); c.width = 72; c.height = 56; drawThumb(c, cr);
       li.innerHTML = `<span class="no">${shown}</span>`; li.appendChild(c);
-      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = r.name || L('名なし'); li.appendChild(nm);
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = dispName(r.name); li.appendChild(nm);
       const tm = document.createElement('span'); tm.className = 'tm'; tm.textContent = L('{t}秒', { t: tv.toFixed(2) }); li.appendChild(tm);
       if (r.uid !== m.uid()) { const bk = document.createElement('button'); bk.className = 'tiny rkBlock'; bk.textContent = L('見ない'); bk.onclick = () => { if (!confirm(L('この人の絵をこの端末ではもう出さないようにしますか?(みんなのらくがき・相手・ランキング)'))) return; m.block({ uid: r.uid }); li.remove(); toast(L('この人の絵を出さないようにしました')); }; li.appendChild(bk); }
       ol.appendChild(li);
@@ -2286,7 +2289,7 @@ async function openRank() {
     const label = RANK_PERIODS.find(p => p[0] === period)[1];
     $('rankStatus').textContent = (shown ? L('{label}の上位 {n} 匹(みんなの端末で走らせ直して確かめたタイムだけ)', { label, n: shown }) + (dropped ? L(' / 合わない {n} 件は出していません', { n: dropped }) : '') : L('{label}はまだだれも記録していません。一番乗りのチャンス!', { label })) + (rows.stale ? L('。いまは混み合っているので少し前の表です') : '');
     const mb = $('rankMine');
-    if (mine) { mb.innerHTML = L('あなたは <b>{r}位</b>({name}・{t}秒)', { r: mine.rank, name: esc(mine.name || L('名なし')), t: mine.t.toFixed(2) }); mb.classList.remove('hidden'); }
+    if (mine) { mb.innerHTML = L('あなたは <b>{r}位</b>({name}・{t}秒)', { r: mine.rank, name: esc(dispName(mine.name)), t: mine.t.toFixed(2) }); mb.classList.remove('hidden'); }
     else { const my = await m.myRank(course, period).catch(() => null); if (my) { mb.innerHTML = L('あなたの記録 {t}秒(上位{n}位の外)', { t: my.t.toFixed(2), n: m.RANK_LIMIT || 20 }); mb.classList.remove('hidden'); } }
   } catch (e) {
     console.error(e);
