@@ -37,7 +37,7 @@
       }
       opts.files = uris;
     }
-    opts.dialogTitle = 'らくがき運動会';
+    opts.dialogTitle = window.L ? window.L('らくがき運動会') : 'らくがき運動会';
     try { await P.Share.share(opts); }
     catch (e) { var m = String(e && (e.message || e)); if (/cancel/i.test(m)) throw abortErr(); throw e; }
   };
