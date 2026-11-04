@@ -310,6 +310,10 @@
     '通報しました': ['Reported', '신고했어요'],
     '通報できませんでした': ["Couldn't report", '신고하지 못했어요'],
     '見ない': ['Hide', '숨기기'],
+    'この人をブロック': ['Block this player', '이 사람 차단'],
+    'この人をブロックしますか?この人の絵はこの端末にもう出ません(みんなのらくがき・相手・ランキング)。運営にも知らせます。': ['Block this player? Their drawings will no longer appear on this device (Everyone’s Doodles, opponents and rankings). We will also be notified.', '이 사람을 차단할까요? 이 사람의 그림은 이 기기에 더 이상 나오지 않습니다(모두의 낙서·상대·랭킹). 운영자에게도 알립니다.'],
+    'ブロックしました': ['Blocked', '차단했습니다'],
+    'この記録を通報しますか?(不快な絵・名前など)運営が24時間以内に確かめます。': ['Report this record? (offensive drawing, name, etc.) We will review it within 24 hours.', '이 기록을 신고할까요?(불쾌한 그림·이름 등) 운영자가 24시간 이내에 확인합니다.'],
     'この人の絵をこの端末ではもう出さないようにしますか?(みんなのらくがき・相手・ランキング)': ["Hide this person's drawings on this device? (Everyone's Doodles, opponents, rankings)", '이 사람의 그림을 이 기기에서 더 이상 표시하지 않을까요?(모두의 낙서·상대·랭킹)'],
     'この人の絵を出さないようにしました': ["This person's drawings are now hidden", '이 사람의 그림을 숨겼어요'],
     '「{name}」と走る生き物を描いてね': ['Draw a creature to race "{name}"', '「{name}」 상대로 달릴 생물을 그려 봐'],
@@ -317,7 +321,7 @@
     '読みこめません': ["Couldn't load", '불러올 수 없어요'],
     'いまは混み合っていて、みんなの絵とランキングが一時的に見られません': ["It's busy right now, so Everyone's Doodles and the rankings are unavailable for a bit", '지금은 접속이 많아 모두의 낙서와 랭킹을 잠시 볼 수 없어요'],
     // ---- 利用規約の同意(アプリ版) ----
-    'みんなのらくがき・3人の部屋・ランキングでは、描いた絵と名前がほかの人にも見えます。\n利用規約(不快な絵・名前・いやがらせの禁止など)に同意して使いますか?\n規約はタイトル画面の「利用規約・配信について」で読めます。不快な絵は「通報」「見ない」で消せます。': ["In Everyone's Doodles, 3-player rooms and Rankings, other people can see your drawing and name.\nDo you agree to the Terms (no offensive drawings or names, no harassment) and continue?\nYou can read the Terms from the title screen. Remove drawings you don't like with \"Report\" or \"Hide\".", '모두의 낙서·3인 방·랭킹에서는 그린 그림과 이름이 다른 사람에게도 보여요.\n이용약관(불쾌한 그림·이름·괴롭힘 금지 등)에 동의하고 사용할까요?\n약관은 타이틀 화면에서 읽을 수 있어요. 불쾌한 그림은 「신고」「숨기기」로 지울 수 있어요.'],
+    'みんなのらくがき・3人の部屋・ランキングでは、描いた絵と名前がほかの人にも見えます。\n利用規約(不快な絵・名前・いやがらせの禁止など)に同意して使いますか?\n規約はタイトル画面の「利用規約・配信について」で読めます。不快な絵は「通報」「この人をブロック」で消せます。': ["In Everyone's Doodles, 3-player rooms and Rankings, other people can see your drawing and name.\nDo you agree to the Terms (no offensive drawings or names, no harassment) and continue?\nYou can read the Terms from the title screen. Remove drawings you don't like with \"Report\" or \"Block this player\".", '모두의 낙서·3인 방·랭킹에서는 그린 그림과 이름이 다른 사람에게도 보여요.\n이용약관(불쾌한 그림·이름·괴롭힘 금지 등)에 동의하고 사용할까요?\n약관은 타이틀 화면에서 읽을 수 있어요. 불쾌한 그림은 「신고」「이 사람 차단」으로 지울 수 있어요.'],
     '利用規約に同意すると使えます': ['Available after you agree to the Terms', '이용약관에 동의하면 쓸 수 있어요'],
     // ---- きろく・アルバム ----
     '自分の図鑑・きろく': ['My Collection & Records', '나만의 도감·기록'],

@@ -34,7 +34,22 @@ const LS = {
 const BLOCK_KEY = 'rkg_block';
 function blockData() { const b = LS.get(BLOCK_KEY); return { ids: (b && b.ids) || [], uids: (b && b.uids) || [] }; }
 export function isBlocked(it) { if (!it) return false; const b = blockData(); return !!((it.id && b.ids.includes(it.id)) || (it.uid && b.uids.includes(it.uid))); }
+// ---------- 運営あての知らせ(2026-11-04、App Store 1.2) ----------
+// reports/{送った人の uid}_{種類}_{相手}。1人が同じ相手に1回だけ(ルールで作るだけ・読むのは運営だけ)。
+// 送るのは 種類・相手の文書の場所・相手の uid・名前(12字まで)・時刻。端末で消す動きは待たずに進める。
+export async function notifyOps(kind, info) {
+  await init();
+  const key = String(info.path || info.target || '').replace(/[^A-Za-z0-9_-]/g, '~').slice(0, 200);
+  const ref = F.doc(db, 'reports', uid() + '_' + kind + '_' + key);
+  await guard(() => F.setDoc(ref, { kind, path: String(info.path || '').slice(0, 200), target: String(info.target || '').slice(0, 64), name: String(info.name || '').slice(0, 12), by: uid(), at: F.serverTimestamp() }), 15000);
+}
+// ランキングの記録を通報する(運営が24時間以内に見る)
+export async function reportRank(board, entryUid, name) {
+  try { await notifyOps('rank', { path: 'rank/' + board + '/entries/' + entryUid, target: entryUid, name }); }
+  catch (e) { if (/permission/i.test(String(e && (e.code || e.message)))) throw new Error(L('通報ずみです')); throw e; }
+}
 export function block(it) {
+  notifyOps('block', { path: it.id ? 'creatures/' + it.id : '', target: it.uid || '', name: it.name || '' }).catch(() => { });
   const b = blockData();
   if (it.id && !b.ids.includes(it.id)) b.ids.push(it.id);
   if (it.uid && it.uid !== uid() && !b.uids.includes(it.uid)) b.uids.push(it.uid);
@@ -221,6 +236,7 @@ export async function report(id) {
     tx.set(rref, { at: F.serverTimestamp() });
   }), 15000);
   LS.del(GAL_KEY);
+  notifyOps('creature', { path: 'creatures/' + id }).catch(() => { });
 }
 
 // ---------- 部屋(3人) ----------

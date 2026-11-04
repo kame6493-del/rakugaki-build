@@ -96,7 +96,7 @@ html,body{height:100%;background:var(--sky);color:var(--ink);font-family:var(--f
 .gi{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:6px;text-align:center;font-size:13px;font-weight:bold;display:flex;flex-direction:column;gap:4px}
 .gi canvas{width:100%;aspect-ratio:6/5;display:block}
 .gi .gt{font-size:11px;font-weight:normal}
-.gi .row{display:flex;gap:4px}
+.gi .row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
 .gi button{flex:1;font:inherit;font-size:12px;border:2px solid var(--ink);border-radius:8px;background:var(--yellow);padding:4px;cursor:pointer}
 .gi button.rp{flex:0 0 auto;background:#fff;font-size:11px}
 .galBtns{display:flex;flex-direction:column;gap:8px;max-width:440px;width:100%;margin:0 auto}
@@ -225,6 +225,7 @@ button.gi{font:inherit;color:var(--ink);cursor:pointer}
 .rk .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk .tm{font-size:17px;font-weight:900}
 .rk .rkBlock{flex:0 0 auto;font-size:10px;padding:2px 6px;background:#fff}
+.rk{flex-wrap:wrap} .rk .rkActs{flex-basis:100%;display:flex;justify-content:flex-end;gap:8px;margin:-2px 0 2px} .rk .rkActs .rkBlock{font-size:12px;padding:3px 10px}
 .rk.top1{background:#fff4c4} .rk.top1 .no{color:#c9900a} .rk.me{border-width:4px;border-color:var(--red)}
 @media (min-aspect-ratio: 11/10){
   .hudSub{top:58px}

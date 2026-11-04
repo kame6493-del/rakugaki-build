@@ -98,7 +98,7 @@ const Store = {
   termsOk() {
     if (!Full.native()) return true;
     try { if (localStorage.getItem(CFG.STORE_KEY + '_terms') === '1') return true; } catch (e) { }
-    if (!confirm(L('みんなのらくがき・3人の部屋・ランキングでは、描いた絵と名前がほかの人にも見えます。\n利用規約(不快な絵・名前・いやがらせの禁止など)に同意して使いますか?\n規約はタイトル画面の「利用規約・配信について」で読めます。不快な絵は「通報」「見ない」で消せます。'))) return false;
+    if (!confirm(L('みんなのらくがき・3人の部屋・ランキングでは、描いた絵と名前がほかの人にも見えます。\n利用規約(不快な絵・名前・いやがらせの禁止など)に同意して使いますか?\n規約はタイトル画面の「利用規約・配信について」で読めます。不快な絵は「通報」「この人をブロック」で消せます。'))) return false;
     try { localStorage.setItem(CFG.STORE_KEY + '_terms', '1'); } catch (e) { }
     return true;
   },
@@ -1807,8 +1807,8 @@ async function galleryMore() {
     const b = document.createElement('button'); b.textContent = L('走る'); b.onclick = () => vsGallery(it.creature);
     const rp = document.createElement('button'); rp.className = 'rp'; rp.textContent = L('通報');
     rp.onclick = async () => { if (!confirm(L('この絵を通報しますか?(不快な絵・名前など)'))) return; try { await m.report(it.id); d.style.opacity = 0.3; rp.disabled = true; toast(L('通報しました')); } catch (e) { toast(e.message || L('通報できませんでした')); } };
-    const bk = document.createElement('button'); bk.className = 'rp'; bk.textContent = L('見ない');
-    bk.onclick = () => { if (!confirm(L('この人の絵をこの端末ではもう出さないようにしますか?(みんなのらくがき・相手・ランキング)'))) return; m.block(it); d.remove(); toast(L('この人の絵を出さないようにしました')); };
+    const bk = document.createElement('button'); bk.className = 'rp'; bk.textContent = L('この人をブロック');
+    bk.onclick = () => { if (!confirm(L('この人をブロックしますか?この人の絵はこの端末にもう出ません(みんなのらくがき・相手・ランキング)。運営にも知らせます。'))) return; m.block({ id: it.id, uid: it.uid, name: it.creature && it.creature.name }); d.remove(); toast(L('ブロックしました')); };
     row.appendChild(b); row.appendChild(rp); row.appendChild(bk); d.appendChild(row);
     $('galGrid').appendChild(d);
   }
@@ -2282,7 +2282,13 @@ async function openRank() {
       li.innerHTML = `<span class="no">${shown}</span>`; li.appendChild(c);
       const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = dispName(r.name); li.appendChild(nm);
       const tm = document.createElement('span'); tm.className = 'tm'; tm.textContent = L('{t}秒', { t: tv.toFixed(2) }); li.appendChild(tm);
-      if (r.uid !== m.uid()) { const bk = document.createElement('button'); bk.className = 'tiny rkBlock'; bk.textContent = L('見ない'); bk.onclick = () => { if (!confirm(L('この人の絵をこの端末ではもう出さないようにしますか?(みんなのらくがき・相手・ランキング)'))) return; m.block({ uid: r.uid }); li.remove(); toast(L('この人の絵を出さないようにしました')); }; li.appendChild(bk); }
+      if (r.uid !== m.uid()) {
+        const rp = document.createElement('button'); rp.className = 'tiny rkBlock rkReport'; rp.textContent = L('通報');
+        rp.onclick = async () => { if (!confirm(L('この記録を通報しますか?(不快な絵・名前など)運営が24時間以内に確かめます。'))) return; try { await m.reportRank(m.boardId(course, period), r.uid, r.name); rp.disabled = true; li.style.opacity = 0.4; toast(L('通報しました')); } catch (e) { toast(e.message || L('通報できませんでした')); } };
+        const bk = document.createElement('button'); bk.className = 'tiny rkBlock'; bk.textContent = L('この人をブロック');
+        bk.onclick = () => { if (!confirm(L('この人をブロックしますか?この人の絵はこの端末にもう出ません(みんなのらくがき・相手・ランキング)。運営にも知らせます。'))) return; m.block({ uid: r.uid, name: r.name, id: '' }); li.remove(); toast(L('ブロックしました')); };
+        const acts = document.createElement('div'); acts.className = 'rkActs'; acts.appendChild(rp); acts.appendChild(bk); li.appendChild(acts);
+      }
       ol.appendChild(li);
       if (r.uid === m.uid()) mine = { rank: shown, t: tv, name: r.name };
     }
